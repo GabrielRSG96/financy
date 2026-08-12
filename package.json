@@ -2,19 +2,17 @@
   "name": "financy",
   "version": "1.0.0",
   "private": true,
-  "description": "Financy - aplicação fullstack de gerenciamento de finanças",
+  "description": "Financy - aplicação fullstack de gerenciamento de finanças. Backend e frontend são projetos independentes; estes scripts são apenas atalhos para rodar os dois juntos.",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "dev": "pnpm --parallel --filter \"./apps/*\" dev",
-    "build": "pnpm --filter api build && pnpm --filter web build",
-    "test": "pnpm --filter \"./apps/*\" test",
-    "typecheck": "pnpm --filter \"./apps/*\" typecheck",
-    "lint": "pnpm --filter \"./apps/*\" lint",
-    "setup": "pnpm install && pnpm --filter api db:setup"
-  },
-  "devDependencies": {
-    "typescript": "^5.7.3"
+    "install:all": "pnpm -C backend install && pnpm -C frontend install",
+    "setup": "pnpm run install:all && pnpm -C backend db:setup",
+    "dev": "trap 'kill 0' EXIT INT TERM; pnpm -C backend dev & pnpm -C frontend dev & wait",
+    "build": "pnpm -C backend build && pnpm -C frontend build",
+    "test": "pnpm -C backend test && pnpm -C frontend test",
+    "typecheck": "pnpm -C backend typecheck && pnpm -C frontend typecheck",
+    "lint": "pnpm -C backend lint && pnpm -C frontend lint"
   }
 }

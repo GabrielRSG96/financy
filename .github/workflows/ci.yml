@@ -15,8 +15,17 @@ env:
 
 jobs:
   quality:
-    name: Lint, typecheck, testes e build
+    name: ${{ matrix.project }} — lint, typecheck, testes e build
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [backend, frontend]
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
 
     steps:
       - uses: actions/checkout@v4
@@ -29,12 +38,10 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
 
       - name: Instalar dependências
         run: pnpm install --frozen-lockfile
-
-      - name: Gerar o Prisma Client
-        run: pnpm --filter api exec prisma generate
 
       - name: Lint
         run: pnpm lint
@@ -49,28 +56,23 @@ jobs:
         run: pnpm build
 
   docker:
-    name: Build das imagens Docker
+    name: Build da imagem ${{ matrix.project }}
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [backend, frontend]
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: docker/setup-buildx-action@v3
 
-      - name: Build da API
+      - name: Build
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: apps/api/Dockerfile
-          push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build do front
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: apps/web/Dockerfile
+          context: ./${{ matrix.project }}
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max

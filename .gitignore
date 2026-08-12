@@ -22,5 +22,7 @@ pnpm-debug.log*
 .vscode/*
 !.vscode/extensions.json
 
-apps/web/dist/
-apps/web/.vite/
+frontend/.vite/
+*.tsbuildinfo
+
+/pnpm-lock.yaml

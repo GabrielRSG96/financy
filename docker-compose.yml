@@ -1,9 +1,8 @@
 services:
-  api:
+  backend:
     build:
-      context: .
-      dockerfile: apps/api/Dockerfile
-    container_name: financy-api
+      context: ./backend
+    container_name: financy-backend
     environment:
       NODE_ENV: production
       DATABASE_URL: file:/data/financy.db
@@ -22,17 +21,16 @@ services:
       retries: 5
       start_period: 20s
 
-  web:
+  frontend:
     build:
-      context: .
-      dockerfile: apps/web/Dockerfile
+      context: ./frontend
       args:
         VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://localhost:4000/graphql}
-    container_name: financy-web
+    container_name: financy-frontend
     ports:
       - '8080:80'
     depends_on:
-      api:
+      backend:
         condition: service_healthy
 
 volumes:

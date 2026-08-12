@@ -8,21 +8,18 @@ RUN corepack enable
 WORKDIR /app
 
 FROM base AS build
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
-COPY apps/api/package.json apps/api/
-RUN pnpm install --filter api... --frozen-lockfile || pnpm install --filter api...
-COPY apps/api apps/api
-RUN pnpm --filter api exec prisma generate && pnpm --filter api build
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY . .
+RUN pnpm exec prisma generate && pnpm build
 
 FROM base AS runtime
 ENV NODE_ENV=production
 COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/apps/api/node_modules ./apps/api/node_modules
-COPY --from=build /app/apps/api/dist ./apps/api/dist
-COPY --from=build /app/apps/api/prisma ./apps/api/prisma
-COPY --from=build /app/apps/api/package.json ./apps/api/package.json
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/package.json ./package.json
 
-WORKDIR /app/apps/api
 ENV DATABASE_URL=file:/data/financy.db
 EXPOSE 4000
 
