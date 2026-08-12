@@ -27,7 +27,10 @@ export interface Category {
   icon: string
   color: CategoryColor
   transactionCount: number
-  totalCents: number
+  incomeCents: number
+  expenseCents: number
+  /** Entradas menos saídas — negativo quando a categoria gasta mais do que recebe. */
+  balanceCents: number
 }
 
 export interface Transaction {

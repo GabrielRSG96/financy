@@ -27,8 +27,12 @@ export const categoryResolvers = {
   Category: {
     transactionCount: async (category: Category, _a: unknown, ctx: Context) =>
       (await ctx.loaders.categoryAggregates.load(category.id)).count,
-    totalCents: async (category: Category, _a: unknown, ctx: Context) =>
-      (await ctx.loaders.categoryAggregates.load(category.id)).totalCents,
+    incomeCents: async (category: Category, _a: unknown, ctx: Context) =>
+      (await ctx.loaders.categoryAggregates.load(category.id)).incomeCents,
+    expenseCents: async (category: Category, _a: unknown, ctx: Context) =>
+      (await ctx.loaders.categoryAggregates.load(category.id)).expenseCents,
+    balanceCents: async (category: Category, _a: unknown, ctx: Context) =>
+      (await ctx.loaders.categoryAggregates.load(category.id)).balanceCents,
   },
 
   Query: {

@@ -10,7 +10,9 @@ const CATEGORY_FIELDS = `
     icon
     color
     transactionCount
-    totalCents
+    incomeCents
+    expenseCents
+    balanceCents
   }
 `
 

@@ -22,6 +22,16 @@ export function formatSignedCurrency(cents: number, type: 'INCOME' | 'EXPENSE'):
 }
 
 /**
+ * Saldo com sinal explícito: 40000 -> "+ R$ 400,00", -40000 -> "- R$ 400,00".
+ * Diferente de `formatSignedCurrency`, o sinal vem do próprio número, e um
+ * saldo zerado sai sem sinal nenhum.
+ */
+export function formatBalance(cents: number): string {
+  if (cents === 0) return formatCurrency(0)
+  return `${cents > 0 ? '+' : '-'} ${formatCurrency(Math.abs(cents))}`
+}
+
+/**
  * Converte o que o usuário digitou em centavos, lendo apenas os dígitos.
  * Digitar "4250" resulta em R$ 42,50 — o comportamento de máquina de calcular
  * que evita ambiguidade entre separador de milhar e de decimal.

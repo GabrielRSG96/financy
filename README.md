@@ -120,7 +120,9 @@ financy/
 
 **Datas em meia-noite UTC.** Gravar e filtrar em UTC evita o clássico "a transação de 01/12 aparece como 30/11" quando o fuso do navegador está atrás de Greenwich.
 
-**Sem N+1 nas categorias.** `transactionCount` e `totalCents` são resolvidos por um DataLoader por request, alimentado por um único `groupBy` — não uma query por categoria da lista.
+**Saldo por categoria é líquido, não bruto.** Uma categoria pode receber e gastar — um freela que rende R$ 800 e custa R$ 400 de ferramenta tem **saldo de R$ 400**, não de R$ 1.200. Por isso a agregação separa por tipo e expõe `incomeCents`, `expenseCents` e `balanceCents` (entradas menos saídas, podendo ser negativo). No dashboard o saldo aparece com sinal e cor, e quando a categoria tem os dois sentidos a quebra é exibida embaixo — senão o saldo sozinho esconderia o movimento real.
+
+**Sem N+1 nas categorias.** Os campos agregados são resolvidos por um DataLoader por request, alimentado por um único `groupBy` — não uma query por categoria da lista.
 
 **Tokens do tema amostrados do Figma.** As cores em `apps/web/src/index.css` foram lidas pixel a pixel dos exports do layout, não estimadas a olho. As sete cores de categoria são exatamente os tons 600 do Tailwind; as tags derivam os tons 100 e 700.
 

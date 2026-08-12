@@ -74,4 +74,5 @@ export function errorCode(errors?: readonly { extensions?: Record<string, unknow
   return errors?.[0]?.extensions?.code
 }
 
-export const CATEGORY_FIELDS = 'id title description icon color transactionCount totalCents'
+export const CATEGORY_FIELDS =
+  'id title description icon color transactionCount incomeCents expenseCents balanceCents'

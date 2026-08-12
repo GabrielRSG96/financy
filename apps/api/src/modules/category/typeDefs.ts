@@ -18,8 +18,12 @@ export const categoryTypeDefs = /* GraphQL */ `
     color: CategoryColor!
     "Quantidade de transações do usuário nesta categoria"
     transactionCount: Int!
-    "Soma dos valores (em centavos) das transações desta categoria"
-    totalCents: Int!
+    "Soma das entradas desta categoria, em centavos"
+    incomeCents: Int!
+    "Soma das saídas desta categoria, em centavos (valor positivo)"
+    expenseCents: Int!
+    "Entradas menos saídas, em centavos. Negativo quando a categoria gasta mais do que recebe."
+    balanceCents: Int!
     createdAt: DateTime!
   }
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   formatAmount,
+  formatBalance,
   formatCurrency,
   formatSignedCurrency,
   maskAmount,
@@ -26,6 +27,29 @@ describe('formatSignedCurrency', () => {
   it('usa + para entradas e - para saídas', () => {
     expect(norm(formatSignedCurrency(425_000, 'INCOME'))).toBe('+ R$ 4.250,00')
     expect(norm(formatSignedCurrency(8_950, 'EXPENSE'))).toBe('- R$ 89,50')
+  })
+})
+
+describe('formatBalance', () => {
+  it('marca saldo positivo com + e negativo com -', () => {
+    expect(norm(formatBalance(40_000))).toBe('+ R$ 400,00')
+    expect(norm(formatBalance(-40_000))).toBe('- R$ 400,00')
+  })
+
+  it('mostra saldo zerado sem sinal', () => {
+    expect(norm(formatBalance(0))).toBe('R$ 0,00')
+  })
+
+  it('representa o caso de entrada e saída na mesma categoria', () => {
+    // R$ 800 de receita menos R$ 400 de despesa = R$ 400 de saldo, não R$ 1.200.
+    const receita = 80_000
+    const despesa = 40_000
+    expect(norm(formatBalance(receita - despesa))).toBe('+ R$ 400,00')
+  })
+
+  it('nunca duplica o sinal de menos', () => {
+    expect(norm(formatBalance(-1))).toBe('- R$ 0,01')
+    expect(formatBalance(-40_000)).not.toContain('--')
   })
 })
 
