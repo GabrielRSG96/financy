@@ -1,0 +1,43 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: financy-api
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: file:/data/financy.db
+      # Troque por um segredo real antes de expor a aplicação.
+      JWT_SECRET: ${JWT_SECRET:-troque-este-segredo-em-producao}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      PORT: 4000
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
+    ports:
+      - '4000:4000'
+    volumes:
+      # Mantém o SQLite fora do container para não perder dados ao recriá-lo.
+      - financy-data:/data
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://localhost:4000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        # O navegador do usuário fala com a API pela porta publicada no host,
+        # por isso é localhost e não o nome do serviço.
+        VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://localhost:4000/graphql}
+    container_name: financy-web
+    ports:
+      - '8080:80'
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  financy-data:

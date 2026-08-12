@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+
+/*
+ * Tokens amostrados diretamente dos PNGs em figma-refs/ — não são estimativas.
+ * A escala de cinzas coincide com a padrão do Tailwind; o verde é custom.
+ */
+@theme {
+  --font-sans: 'Inter Variable', Inter, ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand: #1f6f43;
+  --color-brand-hover: #1a5c38;
+  --color-brand-muted: #579372;
+  --color-brand-soft: #e3ede8;
+
+  --color-canvas: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-line: #ebedf0;
+  --color-line-strong: #dcdfe4;
+
+  --color-ink: #111827;
+  --color-ink-soft: #4b5563;
+  --color-ink-muted: #6b7280;
+  --color-ink-faint: #b5b8bf;
+
+  --color-income: #1f6f43;
+  --color-expense: #dc2626;
+
+  /* Paleta das categorias: tons 600/100/700 do Tailwind */
+  --color-cat-green: #16a34a;
+  --color-cat-blue: #2563eb;
+  --color-cat-purple: #9333ea;
+  --color-cat-pink: #db2777;
+  --color-cat-red: #dc2626;
+  --color-cat-orange: #ea580c;
+  --color-cat-yellow: #ca8a04;
+
+  --radius-card: 0.75rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  /* Foco visível e consistente em todos os controles interativos */
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  /* Remove as setinhas dos inputs numéricos */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer utilities {
+  .card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+  }
+}

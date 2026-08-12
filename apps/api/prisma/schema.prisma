@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  categories   Category[]
+  transactions Transaction[]
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  /// Nome do ícone Lucide — validado contra a allow-list em src/shared/catalog.ts
+  icon        String
+  /// GREEN | BLUE | PURPLE | PINK | RED | ORANGE | YELLOW
+  color       String
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@unique([userId, title])
+  @@index([userId])
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  description String
+  /// Valor SEMPRE positivo, em centavos. O sinal é dado por `type`.
+  amountCents Int
+  date        DateTime
+  /// INCOME | EXPENSE
+  type        String
+  categoryId  String?
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([userId, date])
+  @@index([categoryId])
+}
