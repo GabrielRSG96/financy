@@ -2,13 +2,10 @@ import { forwardRef, type ButtonHTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  /** 'danger' pinta o ícone de vermelho, como o botão de deletar do Figma. */
   tone?: 'neutral' | 'danger'
-  /** Obrigatório: o botão só tem ícone, então precisa de rótulo acessível. */
   label: string
 }
 
-/** Prancha "Icon Button" do styleguide: quadrado, borda sutil, hover cinza. */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ className, tone = 'neutral', label, children, ...props }, ref) => (
     <button

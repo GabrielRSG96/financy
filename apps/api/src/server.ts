@@ -12,7 +12,6 @@ async function main() {
 
   const apollo = new ApolloServer<Context>({
     schema,
-    // Em produção não expomos stack traces nas respostas GraphQL.
     includeStacktraceInErrorResponses: env.NODE_ENV !== 'production',
   })
 

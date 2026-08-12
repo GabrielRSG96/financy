@@ -6,10 +6,6 @@ import { fileURLToPath } from 'node:url'
 const apiRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 const templatePath = resolve(apiRoot, 'prisma/test-template.db')
 
-/**
- * Aplica as migrações uma única vez em um banco "molde". Cada arquivo de teste
- * copia esse molde, o que é muito mais rápido do que migrar por suíte.
- */
 export async function setup() {
   rmSync(templatePath, { force: true })
 

@@ -22,7 +22,6 @@ describe('conversão UTC', () => {
   })
 
   it('não volta um dia para datas no primeiro dia do mês', () => {
-    // Regressão clássica: com conversão local, 01/12 vira 30/11.
     expect(formatShortDate('2025-12-01T00:00:00.000Z')).toBe('01/12/25')
   })
 })
@@ -55,7 +54,6 @@ describe('recentPeriods', () => {
     const periods = recentPeriods(14)
     const meses = new Set(periods.map((p) => `${p.year}-${p.month}`))
 
-    // 14 períodos consecutivos precisam ser todos distintos.
     expect(meses.size).toBe(14)
     expect(periods.every((p) => p.month >= 1 && p.month <= 12)).toBe(true)
   })

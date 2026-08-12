@@ -9,7 +9,6 @@ interface CategoryIconProps {
   className?: string
 }
 
-/** Quadradinho colorido com o ícone da categoria, usado nas listas e nos cards. */
 export function CategoryIcon({ icon, color, size = 'md', className }: CategoryIconProps) {
   const Icon = categoryIcon(icon)
   const tokens = COLOR_TOKENS[color]

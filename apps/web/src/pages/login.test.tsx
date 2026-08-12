@@ -5,7 +5,6 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 import { LoginPage } from './login'
 
-// A validação é o que testamos aqui; a chamada de rede não precisa acontecer.
 vi.mock('@/graphql/client', async () => {
   const actual = await vi.importActual<typeof import('@/graphql/client')>('@/graphql/client')
   return { ...actual, request: vi.fn().mockRejectedValue(new Error('sem rede no teste')) }

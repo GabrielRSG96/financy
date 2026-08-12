@@ -39,7 +39,6 @@ interface AggregatedCategory {
   balanceCents: number
 }
 
-/** Cria uma transação vinculada a uma categoria; usado nos testes de agregação. */
 async function novaTransacao(
   as: string,
   categoryId: string,
@@ -54,7 +53,6 @@ async function novaTransacao(
     },
     as,
   )
-  // Falhar aqui em silêncio faria as asserções de agregação testarem zero.
   if (errors) throw new Error(`Falha ao criar transação: ${errors[0]?.message}`)
 }
 
@@ -87,7 +85,6 @@ describe('criar categoria', () => {
 
   it('recusa cor fora do enum', async () => {
     const { errors } = await h.run(CREATE, { input: { ...validInput, color: 'CYAN' } }, token)
-    // Enum inválido é barrado pela própria validação do GraphQL.
     expect(errors?.length).toBeGreaterThan(0)
   })
 
@@ -271,7 +268,6 @@ describe('estatísticas', () => {
       transactionCount: 3,
       incomeCents: 0,
       expenseCents: 7_500,
-      // Só há saídas, então o saldo é negativo.
       balanceCents: -7_500,
     })
   })
@@ -289,7 +285,6 @@ describe('estatísticas', () => {
       transactionCount: 2,
       incomeCents: 80_000,
       expenseCents: 40_000,
-      // R$ 800 de entrada e R$ 400 de saída dão R$ 400 de saldo — não R$ 1.200.
       balanceCents: 40_000,
     })
   })
@@ -307,7 +302,6 @@ describe('estatísticas', () => {
       transactionCount: 2,
       balanceCents: 0,
     })
-    // Saldo zerado não pode esconder que houve movimento na categoria.
     expect(data?.categories[0].incomeCents).toBe(25_000)
     expect(data?.categories[0].expenseCents).toBe(25_000)
   })

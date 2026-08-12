@@ -1,12 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { createHarness, errorCode, type Harness } from './helpers/harness.js'
 
-/**
- * A regra central do desafio: "o usuário pode ver e gerenciar apenas as
- * transações e categorias criadas por ele". Aqui a Alice cria os dados e o Bob
- * tenta, de todas as formas expostas pelo schema, ler ou alterar o que é dela.
- */
-
 let h: Harness
 let alice: { token: string; userId: string }
 let bob: { token: string; userId: string }

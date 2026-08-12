@@ -12,10 +12,6 @@ interface EmptyStateProps {
   className?: string
 }
 
-/**
- * O Figma não cobre listas vazias, mas toda conta nova começa sem dados —
- * sem isso a primeira impressão do app seria uma tela em branco.
- */
 export function EmptyState({ icon, title, description, action, className }: EmptyStateProps) {
   return (
     <div className={cn('flex flex-col items-center gap-2 px-6 py-12 text-center', className)}>

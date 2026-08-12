@@ -6,7 +6,6 @@ interface AvatarProps {
   size?: 'sm' | 'lg'
 }
 
-/** Círculo cinza com as iniciais — o avatar do Figma (ex.: "CT"). */
 export function Avatar({ initials, className, size = 'sm' }: AvatarProps) {
   return (
     <span

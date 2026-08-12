@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 const DEMO_EMAIL = 'conta@teste.com'
 const DEMO_PASSWORD = 'financy123'
 
-/** Categorias exatamente como aparecem na tela "Categorias" do Figma. */
 const categories = [
   { title: 'Alimentação', description: 'Restaurantes, delivery e refeições', icon: 'utensils', color: 'BLUE' },
   { title: 'Entretenimento', description: 'Cinema, jogos e lazer', icon: 'ticket', color: 'PINK' },
@@ -20,16 +19,9 @@ const categories = [
 
 const today = new Date()
 
-/**
- * Datas relativas ao mês atual, em meia-noite UTC (mesma convenção dos filtros
- * de período). Datas fixas fariam os cards "do mês" do dashboard zerarem assim
- * que o calendário virasse — o seed precisa continuar demonstrando o app.
- * `monthsAgo: 0` é o mês corrente.
- */
 function day(monthsAgo: number, dayOfMonth: number): Date {
   const year = today.getUTCFullYear()
   const month = today.getUTCMonth() - monthsAgo
-  // Dia 31 num mês de 30 dias transborda; o clamp mantém tudo dentro do mês.
   const lastDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate()
   return new Date(Date.UTC(year, month, Math.min(dayOfMonth, lastDay)))
 }
@@ -60,7 +52,6 @@ const transactions = [
 async function main() {
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 10)
 
-  // Idempotente: rodar o seed duas vezes não duplica dados.
   const user = await prisma.user.upsert({
     where: { email: DEMO_EMAIL },
     update: {},

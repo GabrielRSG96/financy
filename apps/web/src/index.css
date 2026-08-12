@@ -1,10 +1,6 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/inter';
 
-/*
- * Tokens amostrados diretamente dos PNGs em figma-refs/ — não são estimativas.
- * A escala de cinzas coincide com a padrão do Tailwind; o verde é custom.
- */
 @theme {
   --font-sans: 'Inter Variable', Inter, ui-sans-serif, system-ui, sans-serif;
 
@@ -26,7 +22,6 @@
   --color-income: #1f6f43;
   --color-expense: #dc2626;
 
-  /* Paleta das categorias: tons 600/100/700 do Tailwind */
   --color-cat-green: #16a34a;
   --color-cat-blue: #2563eb;
   --color-cat-purple: #9333ea;
@@ -54,13 +49,11 @@
     font-family: var(--font-sans);
   }
 
-  /* Foco visível e consistente em todos os controles interativos */
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
 
-  /* Remove as setinhas dos inputs numéricos */
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;

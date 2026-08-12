@@ -18,11 +18,6 @@ export function signToken(userId: string): string {
   } as jwt.SignOptions)
 }
 
-/**
- * Extrai o id do usuário de um header `Authorization: Bearer <token>`.
- * Retorna null para qualquer token ausente, malformado ou expirado — a decisão de
- * bloquear ou não a operação fica com o resolver, via `requireUser`.
- */
 export function userIdFromAuthHeader(header: string | undefined): string | null {
   if (!header) return null
 

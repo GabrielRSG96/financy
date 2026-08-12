@@ -86,7 +86,6 @@ interface SelectFieldProps {
   children: ReactNode
 }
 
-/** Select completo com label/helper — a variação "Select" da prancha de Input. */
 export function SelectField({
   label,
   helper,

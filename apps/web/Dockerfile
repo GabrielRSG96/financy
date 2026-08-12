@@ -10,8 +10,6 @@ COPY apps/web/package.json apps/web/
 RUN pnpm install --filter web... --frozen-lockfile || pnpm install --filter web...
 COPY apps/web apps/web
 
-# O Vite embute as variáveis VITE_* no bundle durante o build, então a URL da
-# API precisa ser conhecida aqui — não em tempo de execução.
 ARG VITE_BACKEND_URL=http://localhost:4000/graphql
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 RUN pnpm --filter web build

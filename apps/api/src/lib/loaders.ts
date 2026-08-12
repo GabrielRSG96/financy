@@ -5,21 +5,11 @@ export interface CategoryAggregate {
   count: number
   incomeCents: number
   expenseCents: number
-  /** Entradas menos saídas — pode ser negativo. */
   balanceCents: number
 }
 
 const EMPTY: CategoryAggregate = { count: 0, incomeCents: 0, expenseCents: 0, balanceCents: 0 }
 
-/**
- * Loaders criados por request. O objetivo é evitar N+1 ao resolver os campos
- * agregados de `Category`: em vez de uma query por categoria da lista, um único
- * groupBy cobre todas as categorias do batch.
- *
- * O agrupamento inclui `type` porque somar entradas e saídas no mesmo balde
- * daria um número sem significado — uma receita de R$ 800 com uma despesa de
- * R$ 400 tem saldo de R$ 400, não de R$ 1.200.
- */
 export function createLoaders(db: Db, userId: string | null) {
   const categoryAggregates = new DataLoader<string, CategoryAggregate>(async (categoryIds) => {
     if (!userId) return categoryIds.map(() => EMPTY)

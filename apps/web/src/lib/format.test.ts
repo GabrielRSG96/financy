@@ -8,7 +8,6 @@ import {
   parseAmountToCents,
 } from './format'
 
-/** Intl usa espaço não-quebrável (U+00A0) depois do "R$"; normaliza para comparar. */
 const norm = (value: string) => value.replace(/\u00a0/g, ' ')
 
 describe('formatCurrency', () => {
@@ -41,7 +40,6 @@ describe('formatBalance', () => {
   })
 
   it('representa o caso de entrada e saída na mesma categoria', () => {
-    // R$ 800 de receita menos R$ 400 de despesa = R$ 400 de saldo, não R$ 1.200.
     const receita = 80_000
     const despesa = 40_000
     expect(norm(formatBalance(receita - despesa))).toBe('+ R$ 400,00')

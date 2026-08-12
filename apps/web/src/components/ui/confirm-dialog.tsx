@@ -13,7 +13,6 @@ interface ConfirmDialogProps {
   onConfirm: () => void
 }
 
-/** Confirmação para ações destrutivas — nenhuma exclusão acontece sem passar por aqui. */
 export function ConfirmDialog({
   open,
   onOpenChange,

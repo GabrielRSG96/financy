@@ -4,8 +4,6 @@ export default defineConfig({
   test: {
     globalSetup: ['./tests/helpers/global-setup.ts'],
     include: ['tests/**/*.test.ts'],
-    // Cada arquivo de teste roda em seu próprio banco SQLite; sem isolamento de
-    // processo os arquivos disputariam o mesmo DATABASE_URL.
     pool: 'forks',
     env: {
       NODE_ENV: 'test',

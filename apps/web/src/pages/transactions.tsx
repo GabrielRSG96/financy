@@ -39,14 +39,11 @@ export function TransactionsPage() {
   const { data: categories = [] } = useCategories()
   const deleteMutation = useDeleteTransaction()
 
-  // Espera o usuário parar de digitar antes de consultar a API.
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 350)
     return () => clearTimeout(timer)
   }, [search])
 
-  // Qualquer mudança de filtro invalida a página atual: a página 3 do
-  // resultado antigo raramente existe no novo.
   useEffect(() => {
     setPage(1)
   }, [debouncedSearch, type, categoryId, period])
@@ -84,7 +81,6 @@ export function TransactionsPage() {
       onSuccess: () => {
         toast.success('Transação deletada.')
         setDeleting(null)
-        // Deletar o último item de uma página nos deixaria numa página vazia.
         if (items.length === 1 && page > 1) setPage(page - 1)
       },
       onError: (error: ApiError) => toast.error(error.message),

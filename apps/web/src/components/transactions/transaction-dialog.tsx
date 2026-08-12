@@ -31,11 +31,9 @@ type FormValues = z.infer<typeof schema>
 interface TransactionDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  /** Presente = edição; ausente = criação. */
   transaction?: Transaction | null
 }
 
-/** Data de hoje no formato do <input type="date">. */
 function todayInputValue(): string {
   const now = new Date()
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
@@ -64,8 +62,6 @@ export function TransactionDialog({ open, onOpenChange, transaction }: Transacti
     },
   })
 
-  // Reabrir o modal precisa recarregar os dados da transação escolhida —
-  // sem isso o formulário mostraria o estado da edição anterior.
   useEffect(() => {
     if (!open) return
 
@@ -149,8 +145,6 @@ export function TransactionDialog({ open, onOpenChange, transaction }: Transacti
                   icon={<span className="text-sm text-ink-muted">R$</span>}
                   error={fieldState.error?.message}
                   value={field.value}
-                  // Reformata a cada tecla: o usuário digita centavos da direita
-                  // para a esquerda, como numa maquininha.
                   onChange={(event) => field.onChange(maskAmount(event.target.value))}
                   onBlur={field.onBlur}
                 />
@@ -193,7 +187,6 @@ interface TypeToggleProps {
   onChange: (value: TransactionType) => void
 }
 
-/** Par de botões Despesa/Receita — o ativo ganha borda e cor do próprio tipo. */
 function TypeToggle({ value, onChange }: TypeToggleProps) {
   const options = [
     { type: 'EXPENSE' as const, label: 'Despesa', Icon: CircleArrowDown, active: 'border-expense text-expense bg-expense/5' },

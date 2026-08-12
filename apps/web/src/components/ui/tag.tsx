@@ -8,7 +8,6 @@ interface TagProps {
   className?: string
 }
 
-/** Prancha "Tag": pílula com fundo no tom 100 e texto no tom 700. */
 export function Tag({ label, color, className }: TagProps) {
   const tokens = COLOR_TOKENS[color]
 
@@ -26,7 +25,6 @@ export function Tag({ label, color, className }: TagProps) {
   )
 }
 
-/** Tag neutra para transações que ficaram sem categoria. */
 export function NeutralTag({ label, className }: { label: string; className?: string }) {
   return (
     <span

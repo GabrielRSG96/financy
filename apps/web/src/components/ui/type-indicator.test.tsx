@@ -15,7 +15,6 @@ describe('TypeIndicator', () => {
 
   it('mantém o rótulo acessível mesmo exibindo só o ícone', () => {
     render(<TypeIndicator type="INCOME" showLabel={false} />)
-    // Visualmente escondido, mas continua legível para leitores de tela.
     expect(screen.getByText('Entrada')).toHaveClass('sr-only')
   })
 })

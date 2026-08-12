@@ -4,17 +4,11 @@ const endpoint = import.meta.env.VITE_BACKEND_URL ?? 'http://localhost:4000/grap
 
 const TOKEN_KEY = 'financy:token'
 
-/**
- * O "Lembrar-me" da tela de login não é decorativo: marcado, o token vai para o
- * localStorage e sobrevive ao fechamento do navegador; desmarcado, fica no
- * sessionStorage e morre junto com a aba.
- */
 export const tokenStorage = {
   get: (): string | null => {
     try {
       return localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY)
     } catch {
-      // Modo privado de alguns navegadores bloqueia o storage.
       return null
     }
   },
@@ -25,7 +19,7 @@ export const tokenStorage = {
       other.removeItem(TOKEN_KEY)
       target.setItem(TOKEN_KEY, token)
     } catch {
-      /* sessão fica apenas em memória */
+      return
     }
   },
   clear: () => {
@@ -33,14 +27,13 @@ export const tokenStorage = {
       localStorage.removeItem(TOKEN_KEY)
       sessionStorage.removeItem(TOKEN_KEY)
     } catch {
-      /* nada a fazer */
+      return
     }
   },
 }
 
 const client = new GraphQLClient(endpoint)
 
-/** Chamado quando a API responde UNAUTHENTICATED — derruba a sessão no app. */
 let onUnauthenticated: (() => void) | null = null
 
 export function setUnauthenticatedHandler(handler: () => void) {
@@ -58,7 +51,6 @@ export class ApiError extends Error {
   }
 }
 
-/** Converte o erro cru do graphql-request em algo que a UI consegue exibir. */
 function toApiError(error: unknown): ApiError {
   if (error instanceof ClientError) {
     const first = error.response.errors?.[0]

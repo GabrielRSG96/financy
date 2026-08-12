@@ -19,10 +19,6 @@ export function contextFromRequest(req: IncomingMessage): Context {
   return createContext(req.headers.authorization)
 }
 
-/**
- * Porta de entrada de toda operação autenticada. Devolve o id do usuário logado
- * para que os resolvers sempre filtrem os dados por dono — a regra central do app.
- */
 export function requireUser(ctx: Context): string {
   if (!ctx.userId) throw unauthenticated()
   return ctx.userId

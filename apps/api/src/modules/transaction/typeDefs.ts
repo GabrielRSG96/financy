@@ -1,4 +1,4 @@
-export const transactionTypeDefs = /* GraphQL */ `
+export const transactionTypeDefs = `
   enum TransactionType {
     INCOME
     EXPENSE

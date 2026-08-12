@@ -28,8 +28,6 @@ export function useTransactions(
       (await request<{ transactions: TransactionPage }>(TRANSACTIONS, { filter, page, pageSize }))
         .transactions,
     enabled,
-    // Mantém a página anterior visível durante a troca de página/filtro,
-    // evitando o "pisca-pisca" da tabela.
     placeholderData: (previous) => previous,
   })
 }
@@ -42,7 +40,6 @@ export function useSummary(month?: number, year?: number, enabled = true) {
   })
 }
 
-/** Uma transação altera saldo, listas e contadores de categoria — invalida tudo. */
 function useTransactionInvalidation() {
   const queryClient = useQueryClient()
 
@@ -54,8 +51,6 @@ function useTransactionInvalidation() {
   }
 }
 
-// O TError explícito faz o `onError` das telas receber ApiError (com `code` e
-// `fieldErrors`) em vez do Error genérico do React Query.
 export function useCreateTransaction() {
   const invalidate = useTransactionInvalidation()
 

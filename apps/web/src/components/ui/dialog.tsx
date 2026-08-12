@@ -32,7 +32,6 @@ export const DialogContent = forwardRef<
               {description}
             </DialogPrimitive.Description>
           ) : (
-            /* Radix exige uma descrição associada; escondemos quando não há texto. */
             <DialogPrimitive.Description className="sr-only">{title}</DialogPrimitive.Description>
           )}
         </div>

@@ -2,7 +2,6 @@ import { Eye, EyeOff, Lock } from 'lucide-react'
 import { forwardRef, useState } from 'react'
 import { Input, type InputProps } from '@/components/ui/field'
 
-/** Campo de senha com o olhinho de mostrar/ocultar, como no Figma. */
 export const PasswordInput = forwardRef<HTMLInputElement, Omit<InputProps, 'type' | 'icon'>>(
   (props, ref) => {
     const [visible, setVisible] = useState(false)

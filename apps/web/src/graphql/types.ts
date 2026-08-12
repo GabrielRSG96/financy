@@ -1,9 +1,3 @@
-/**
- * Tipos do domínio, espelhando o SDL da API (apps/api/src/modules/*//*typeDefs.ts).
- * São escritos à mão de propósito: o schema é pequeno e estável, e assim o build
- * do front não depende de um servidor rodando para gerar código.
- */
-
 export type CategoryColor = 'GREEN' | 'BLUE' | 'PURPLE' | 'PINK' | 'RED' | 'ORANGE' | 'YELLOW'
 
 export type TransactionType = 'INCOME' | 'EXPENSE'
@@ -29,7 +23,6 @@ export interface Category {
   transactionCount: number
   incomeCents: number
   expenseCents: number
-  /** Entradas menos saídas — negativo quando a categoria gasta mais do que recebe. */
   balanceCents: number
 }
 

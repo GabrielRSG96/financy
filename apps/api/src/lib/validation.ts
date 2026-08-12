@@ -1,11 +1,6 @@
 import type { z } from 'zod'
 import { badRequest } from './errors.js'
 
-/**
- * Roda um schema zod sobre os argumentos do resolver e converte a falha em um
- * erro GraphQL com `code: BAD_USER_INPUT`, carregando os erros por campo para
- * que o front consiga destacar o input errado.
- */
 export function parseInput<S extends z.ZodTypeAny>(schema: S, value: unknown): z.infer<S> {
   const result = schema.safeParse(value)
   if (result.success) return result.data

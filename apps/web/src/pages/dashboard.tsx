@@ -131,8 +131,6 @@ export function DashboardPage() {
           ) : categories.data?.length ? (
             <ul className="space-y-3 p-5">
               {categories.data
-                // Ordena pelo movimento total (entradas + saídas): uma categoria
-                // que recebeu e gastou muito continua relevante mesmo com saldo zero.
                 .slice()
                 .sort((a, b) => movement(b) - movement(a))
                 .slice(0, 5)
@@ -153,17 +151,10 @@ export function DashboardPage() {
   )
 }
 
-/** Quanto dinheiro passou pela categoria, independentemente da direção. */
 function movement(category: Category): number {
   return category.incomeCents + category.expenseCents
 }
 
-/**
- * Linha do painel de categorias. Mostra o **saldo** (entradas menos saídas), e
- * não a soma bruta: uma receita de R$ 800 com uma despesa de R$ 400 vale
- * R$ 400 de saldo. Quando a categoria tem os dois sentidos, a quebra aparece
- * embaixo — sem ela, o saldo sozinho esconderia o movimento real.
- */
 function CategoryRow({ category }: { category: Category }) {
   const { balanceCents, incomeCents, expenseCents } = category
   const isMixed = incomeCents > 0 && expenseCents > 0

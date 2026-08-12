@@ -1,8 +1,6 @@
 packages:
   - 'apps/*'
 
-# Dependências que precisam rodar scripts de build/postinstall.
-# Prisma gera o client e baixa os engines; esbuild instala seu binário nativo.
 allowBuilds:
   '@apollo/protobufjs': true
   '@prisma/client': true

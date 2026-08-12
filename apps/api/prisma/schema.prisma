@@ -23,9 +23,7 @@ model Category {
   id          String   @id @default(cuid())
   title       String
   description String?
-  /// Nome do ícone Lucide — validado contra a allow-list em src/shared/catalog.ts
   icon        String
-  /// GREEN | BLUE | PURPLE | PINK | RED | ORANGE | YELLOW
   color       String
   userId      String
   createdAt   DateTime @default(now())
@@ -41,10 +39,8 @@ model Category {
 model Transaction {
   id          String   @id @default(cuid())
   description String
-  /// Valor SEMPRE positivo, em centavos. O sinal é dado por `type`.
   amountCents Int
   date        DateTime
-  /// INCOME | EXPENSE
   type        String
   categoryId  String?
   userId      String

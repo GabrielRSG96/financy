@@ -10,7 +10,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Valores só para o pipeline — o banco é descartado ao fim do job.
   DATABASE_URL: file:./ci.db
   JWT_SECRET: segredo-de-ci-nao-usar-em-producao
 

@@ -8,17 +8,12 @@ interface PaginationProps {
   className?: string
 }
 
-/**
- * Janela de no máximo 5 páginas ao redor da atual — com muitas páginas, listar
- * todas estouraria a linha do rodapé da tabela.
- */
 function pageWindow(page: number, totalPages: number, size = 5): number[] {
   const start = Math.max(1, Math.min(page - Math.floor(size / 2), totalPages - size + 1))
   const count = Math.min(size, totalPages)
   return Array.from({ length: count }, (_, index) => start + index)
 }
 
-/** Prancha "Pagination Button": quadrados; o ativo fica verde sólido. */
 export function Pagination({ page, totalPages, onPageChange, className }: PaginationProps) {
   if (totalPages <= 1) return null
 

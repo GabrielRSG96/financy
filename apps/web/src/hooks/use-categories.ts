@@ -30,10 +30,6 @@ export function useCategoryStats(enabled = true) {
   })
 }
 
-/**
- * Mexer em categoria repercute em várias telas (lista, estatísticas, tags das
- * transações), então invalidamos tudo em vez de tentar remendar o cache.
- */
 function useCategoryInvalidation() {
   const queryClient = useQueryClient()
 
@@ -44,8 +40,6 @@ function useCategoryInvalidation() {
   }
 }
 
-// O TError explícito faz o `onError` das telas receber ApiError (com `code` e
-// `fieldErrors`) em vez do Error genérico do React Query.
 export function useCreateCategory() {
   const invalidate = useCategoryInvalidation()
 

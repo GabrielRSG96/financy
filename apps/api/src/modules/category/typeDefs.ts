@@ -1,4 +1,4 @@
-export const categoryTypeDefs = /* GraphQL */ `
+export const categoryTypeDefs = `
   enum CategoryColor {
     GREEN
     BLUE

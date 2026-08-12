@@ -9,7 +9,6 @@ import { ProfilePage } from '@/pages/profile'
 import { SignUpPage } from '@/pages/sign-up'
 import { TransactionsPage } from '@/pages/transactions'
 
-/** Splash curto enquanto o token salvo é validado — evita piscar a tela de login. */
 function BootScreen() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas">
@@ -18,7 +17,6 @@ function BootScreen() {
   )
 }
 
-/** Rotas privadas: sem sessão, volta para a raiz (que renderiza o login). */
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
 
@@ -27,7 +25,6 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
-/** Telas de autenticação: com sessão ativa, não faz sentido exibi-las. */
 function GuestRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
 
@@ -36,10 +33,6 @@ function GuestRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
-/**
- * A raiz é dupla, como pede o desafio: login para quem está deslogado,
- * dashboard para quem está logado.
- */
 function RootRoute() {
   const { user, loading } = useAuth()
 

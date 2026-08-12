@@ -1,11 +1,3 @@
-/**
- * Catálogo compartilhado entre API e front-end.
- *
- * Os ícones vêm da biblioteca Lucide (mesma indicada no styleguide do Figma) e as
- * cores são os tons 600 do Tailwind amostrados diretamente dos PNGs de referência.
- * Manter a lista fechada evita que o cliente grave um ícone inexistente no banco.
- */
-
 export const CATEGORY_ICONS = [
   'briefcase',
   'wallet',

@@ -1,4 +1,4 @@
-export const userTypeDefs = /* GraphQL */ `
+export const userTypeDefs = `
   scalar DateTime
 
   type User {

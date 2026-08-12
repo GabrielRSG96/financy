@@ -12,7 +12,6 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 30_000,
       refetchOnWindowFocus: false,
-      // Erros de autenticação e validação não melhoram com nova tentativa.
       retry: 1,
     },
   },

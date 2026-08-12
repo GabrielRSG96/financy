@@ -4,12 +4,10 @@ import { cn } from '@/lib/utils'
 
 interface TypeIndicatorProps {
   type: TransactionType
-  /** Sem rótulo, exibe apenas o ícone (usado na lista do dashboard). */
   showLabel?: boolean
   className?: string
 }
 
-/** Prancha "Type": Entrada (seta para cima, verde) e Saída (para baixo, vermelha). */
 export function TypeIndicator({ type, showLabel = true, className }: TypeIndicatorProps) {
   const isIncome = type === 'INCOME'
   const Icon = isIncome ? CircleArrowUp : CircleArrowDown

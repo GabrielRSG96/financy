@@ -11,13 +11,11 @@ const templatePath = resolve(apiRoot, 'prisma/test-template.db')
 
 export interface Harness {
   db: PrismaClient
-  /** Executa uma operação GraphQL; `token` simula o header Authorization. */
   run: <T = Record<string, unknown>>(
     query: string,
     variables?: Record<string, unknown>,
     token?: string,
   ) => Promise<{ data: T | null | undefined; errors?: readonly { message: string; extensions?: Record<string, unknown> }[] }>
-  /** Cria um usuário e devolve o token dele — atalho para os testes de isolamento. */
   signUp: (email: string, name?: string) => Promise<{ token: string; userId: string }>
   close: () => Promise<void>
 }
@@ -69,7 +67,6 @@ export async function createHarness(name: string): Promise<Harness> {
   }
 }
 
-/** Código de erro da primeira falha da resposta — usado nas asserções. */
 export function errorCode(errors?: readonly { extensions?: Record<string, unknown> }[]) {
   return errors?.[0]?.extensions?.code
 }

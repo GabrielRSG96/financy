@@ -6,7 +6,6 @@ import type { User } from '@/graphql/types'
 
 interface AuthContextValue {
   user: User | null
-  /** true enquanto a sessão salva no localStorage ainda está sendo validada. */
   loading: boolean
   signIn: (token: string, user: User, remember?: boolean) => void
   signOut: () => void
@@ -23,7 +22,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(() => {
     tokenStorage.clear()
     setUser(null)
-    // Sem isso, os dados do usuário anterior ficariam em cache para o próximo login.
     queryClient.clear()
   }, [queryClient])
 
@@ -32,7 +30,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(nextUser)
   }, [])
 
-  // Qualquer resposta UNAUTHENTICATED (token expirado, por exemplo) derruba a sessão.
   useEffect(() => {
     setUnauthenticatedHandler(() => {
       tokenStorage.clear()
@@ -40,7 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  // Hidrata a sessão ao abrir o app: o token salvo pode ter expirado.
   useEffect(() => {
     let cancelled = false
 

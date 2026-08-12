@@ -1,10 +1,6 @@
 import 'dotenv/config'
 import { z } from 'zod'
 
-/**
- * Valida as variáveis de ambiente na inicialização: é melhor falhar imediatamente
- * com uma mensagem clara do que descobrir um JWT_SECRET faltando no primeiro login.
- */
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   DATABASE_URL: z.string().min(1, 'DATABASE_URL é obrigatória'),
@@ -23,6 +19,5 @@ if (!parsed.success) {
 
 export const env = {
   ...parsed.data,
-  /** Lista de origens liberadas no CORS. `*` libera qualquer origem. */
   corsOrigins: parsed.data.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean),
 }

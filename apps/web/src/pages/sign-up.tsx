@@ -34,7 +34,6 @@ export function SignUpPage() {
     mutationFn: async (values: FormValues) =>
       (await request<{ signUp: AuthPayload }>(SIGN_UP, values)).signUp,
     onSuccess: ({ token, user }) => {
-      // Cadastro já entra logado — o usuário cai direto no dashboard.
       signIn(token, user)
       toast.success('Conta criada com sucesso!')
     },
@@ -44,7 +43,6 @@ export function SignUpPage() {
         return
       }
 
-      // Erros de validação do backend voltam mapeados por campo.
       const field = Object.keys(error.fieldErrors)[0]
       if (field && field in form.getValues()) {
         form.setError(field as keyof FormValues, { message: error.fieldErrors[field] })

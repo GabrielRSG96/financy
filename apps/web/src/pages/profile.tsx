@@ -29,7 +29,6 @@ export function ProfilePage() {
     defaultValues: { name: user?.name ?? '' },
   })
 
-  // O nome chega depois que a sessão é hidratada; sem isso o campo ficaria vazio.
   useEffect(() => {
     if (user) form.reset({ name: user.name })
   }, [user, form])

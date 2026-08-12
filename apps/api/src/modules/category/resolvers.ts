@@ -14,7 +14,6 @@ const categoryInputSchema = z.object({
       .max(200, 'A descrição deve ter no máximo 200 caracteres.')
       .optional()
       .nullable()
-      // Campo opcional: string vazia vira null para não poluir o banco.
       .transform((value) => (value ? value : null)),
     icon: z.enum(CATEGORY_ICONS, { errorMap: () => ({ message: 'Ícone inválido.' }) }),
     color: z.enum(CATEGORY_COLORS, { errorMap: () => ({ message: 'Cor inválida.' }) }),
@@ -87,8 +86,6 @@ export const categoryResolvers = {
       const { id } = parseInput(idSchema, args)
       const { input } = parseInput(categoryInputSchema, args)
 
-      // Existência/propriedade primeiro: uma categoria de outro usuário (ou
-      // inexistente) precisa dar NOT_FOUND, e não CONFLICT por causa do título.
       const owned = await ctx.db.category.findFirst({ where: { id, userId }, select: { id: true } })
       if (!owned) throw notFound('Categoria não encontrada.')
 
@@ -104,8 +101,6 @@ export const categoryResolvers = {
       const userId = requireUser(ctx)
       const { id } = parseInput(idSchema, args)
 
-      // As transações da categoria sobrevivem com categoryId = null (onDelete: SetNull):
-      // apagar uma categoria não pode apagar o histórico financeiro do usuário.
       const { count } = await ctx.db.category.deleteMany({ where: { id, userId } })
       if (count === 0) throw notFound('Categoria não encontrada.')
 

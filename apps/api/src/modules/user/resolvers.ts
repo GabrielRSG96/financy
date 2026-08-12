@@ -20,7 +20,6 @@ const updateProfileSchema = z.object({
   name: z.string().trim().min(2, 'Informe seu nome completo.').max(120),
 })
 
-/** 'Conta teste' -> 'CT'; nomes de uma palavra usam as duas primeiras letras. */
 export function initials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean)
   if (parts.length === 0) return '?'
@@ -36,7 +35,6 @@ export const userResolvers = {
   Query: {
     me: async (_p: unknown, _a: unknown, ctx: Context) => {
       if (!ctx.userId) return null
-      // O token pode referenciar um usuário já removido; nesse caso `me` é null.
       return ctx.db.user.findUnique({ where: { id: ctx.userId } })
     },
   },
@@ -59,7 +57,6 @@ export const userResolvers = {
       const { email, password } = parseInput(signInSchema, args)
 
       const user = await ctx.db.user.findUnique({ where: { email } })
-      // Mensagem genérica de propósito: não revela se o e-mail existe.
       const invalid = unauthenticated('E-mail ou senha incorretos.')
       if (!user) throw invalid
       if (!(await verifyPassword(password, user.passwordHash))) throw invalid

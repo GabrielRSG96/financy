@@ -38,7 +38,6 @@ export function LoginPage() {
       toast.success(`Bem-vindo de volta, ${user.name.split(' ')[0]}!`)
     },
     onError: (error: ApiError) => {
-      // Credenciais erradas viram erro no campo; o resto vira toast.
       if (error.code === 'UNAUTHENTICATED') {
         form.setError('password', { message: error.message })
       } else {

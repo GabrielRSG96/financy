@@ -10,10 +10,6 @@ interface FieldShellProps {
   className?: string
 }
 
-/**
- * Envelope de campo da prancha "Input": label em cima, controle no meio e
- * helper embaixo. No estado de erro, label e helper ficam vermelhos.
- */
 export function FieldShell({ label, helper, error, htmlFor, children, className }: FieldShellProps) {
   return (
     <div className={cn('space-y-1.5', className)}>
@@ -37,9 +33,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
   helper?: ReactNode
   error?: string
-  /** Ícone exibido à esquerda, como nos campos de e-mail e senha do Figma. */
   icon?: ReactNode
-  /** Slot à direita — usado pelo botão de mostrar/ocultar senha. */
   trailing?: ReactNode
   containerClassName?: string
 }

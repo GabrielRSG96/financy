@@ -32,7 +32,6 @@ const DEFAULTS: FormValues = {
 interface CategoryDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  /** Presente = edição; ausente = criação. */
   category?: Category | null
 }
 
@@ -62,7 +61,6 @@ export function CategoryDialog({ open, onOpenChange, category }: CategoryDialogP
   function onSubmit(values: FormValues) {
     const input = {
       title: values.title.trim(),
-      // Campo opcional: vazio vai como null para o backend.
       description: values.description.trim() || null,
       icon: values.icon,
       color: values.color,
@@ -136,7 +134,6 @@ interface IconPickerProps {
   color: CategoryColor
 }
 
-/** Grade com os 16 ícones permitidos — a mesma allow-list validada pela API. */
 function IconPicker({ value, onChange, color }: IconPickerProps) {
   return (
     <FieldShell label="Ícone">
@@ -173,7 +170,6 @@ interface ColorPickerProps {
   onChange: (value: CategoryColor) => void
 }
 
-/** Sete swatches sólidos; o selecionado ganha um check e um anel. */
 function ColorPicker({ value, onChange }: ColorPickerProps) {
   return (
     <FieldShell label="Cor">

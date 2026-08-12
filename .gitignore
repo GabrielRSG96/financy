@@ -3,29 +3,24 @@ dist/
 build/
 coverage/
 
-# env
 .env
 .env.local
 .env.*.local
 !.env.example
 
-# prisma / sqlite
 *.db
 *.db-journal
 *.sqlite
 *.sqlite3
 
-# logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
 
-# editores
 .DS_Store
 .idea/
 .vscode/*
 !.vscode/extensions.json
 
-# vite
 apps/web/dist/
 apps/web/.vite/

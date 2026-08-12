@@ -38,11 +38,6 @@ const transactionInputSchema = z.object({
 
 const idSchema = z.object({ id: z.string().min(1) })
 
-/**
- * Intervalo [início, fim) do mês em UTC. As datas são gravadas na meia-noite UTC
- * do dia escolhido, então comparar em UTC mantém o filtro estável em qualquer
- * fuso horário do servidor.
- */
 function monthRange(year: number, month: number) {
   return {
     gte: new Date(Date.UTC(year, month - 1, 1)),
@@ -50,7 +45,6 @@ function monthRange(year: number, month: number) {
   }
 }
 
-/** Garante que a categoria informada existe E pertence ao usuário. */
 async function assertOwnedCategory(ctx: Context, userId: string, categoryId?: string | null) {
   if (!categoryId) return null
 
@@ -78,8 +72,6 @@ export const transactionResolvers = {
 
       const where: Prisma.TransactionWhereInput = { userId }
 
-      // `contains` vira LIKE no SQLite, que já é case-insensitive para ASCII.
-      // (`mode: 'insensitive'` não é suportado por este provider.)
       if (filter?.search) where.description = { contains: filter.search }
       if (filter?.type) where.type = filter.type
       if (filter?.categoryId) where.categoryId = filter.categoryId
@@ -119,7 +111,6 @@ export const transactionResolvers = {
       const period = monthRange(year, month)
 
       const [allTime, monthly] = await Promise.all([
-        // Saldo total considera todo o histórico, não apenas o mês exibido.
         ctx.db.transaction.groupBy({ by: ['type'], where: { userId }, _sum: { amountCents: true } }),
         ctx.db.transaction.groupBy({
           by: ['type'],

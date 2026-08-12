@@ -1,11 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { Navbar } from './navbar'
 
-/**
- * Casca das telas autenticadas: navbar fixa + conteúdo centralizado.
- * Aceita `children` para a rota raiz (que decide entre login e dashboard) e cai
- * no <Outlet /> quando usado como layout de rotas aninhadas.
- */
 export function AppLayout({ children }: { children?: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-canvas">

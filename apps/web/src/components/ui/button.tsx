@@ -3,7 +3,6 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { forwardRef, type ButtonHTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
-/** Estados e tamanhos conforme a prancha "Label Button" do styleguide. */
 const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 rounded-lg font-medium whitespace-nowrap transition-colors disabled:pointer-events-none [&_svg]:shrink-0',
   {

@@ -8,7 +8,6 @@ interface AuthShellProps {
   footer: ReactNode
 }
 
-/** Layout compartilhado entre Login e Cadastro: logo acima, card centralizado. */
 export function AuthShell({ title, subtitle, children, footer }: AuthShellProps) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-canvas px-4 py-10">

@@ -19,10 +19,6 @@ import {
 } from 'lucide-react'
 import type { CategoryColor } from '@/graphql/types'
 
-/**
- * Espelha a allow-list do backend (apps/api/src/shared/catalog.ts). O servidor
- * recusa qualquer ícone fora desta lista, então as duas precisam andar juntas.
- */
 export const CATEGORY_ICONS = [
   'briefcase',
   'wallet',
@@ -63,17 +59,13 @@ const ICON_MAP: Record<CategoryIconName, LucideIcon> = {
   'file-text': FileText,
 }
 
-/** Ícone correspondente ao nome; cai no Wallet se o backend mandar algo desconhecido. */
 export function categoryIcon(name: string): LucideIcon {
   return ICON_MAP[name as CategoryIconName] ?? Wallet
 }
 
 interface ColorTokens {
-  /** Fundo da tag e do quadrado do ícone (tom 100) */
   soft: string
-  /** Texto da tag (tom 700) */
   strong: string
-  /** Ícone e swatch do seletor (tom 600) */
   solid: string
 }
 
@@ -87,7 +79,6 @@ export const CATEGORY_COLORS: CategoryColor[] = [
   'YELLOW',
 ]
 
-/** Classes fixas (não interpoladas) para que o Tailwind as mantenha no build. */
 export const COLOR_TOKENS: Record<CategoryColor, ColorTokens> = {
   GREEN: { soft: 'bg-[#e0fae9]', strong: 'text-[#15803d]', solid: 'text-[#16a34a]' },
   BLUE: { soft: 'bg-[#dbeafe]', strong: 'text-[#1d4ed8]', solid: 'text-[#2563eb]' },
@@ -98,7 +89,6 @@ export const COLOR_TOKENS: Record<CategoryColor, ColorTokens> = {
   YELLOW: { soft: 'bg-[#f7f3ca]', strong: 'text-[#a16207]', solid: 'text-[#ca8a04]' },
 }
 
-/** Cor sólida (hex) usada nos swatches do seletor de cor. */
 export const COLOR_SWATCH: Record<CategoryColor, string> = {
   GREEN: '#16a34a',
   BLUE: '#2563eb',

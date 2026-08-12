@@ -265,9 +265,7 @@ describe('resumo financeiro', () => {
       solo.token,
     )
 
-    // Saldo = todo o histórico: (400000 + 100000) - (25000 + 50000)
     expect(data?.summary.balanceCents).toBe(425_000)
-    // Entradas/saídas = apenas novembro
     expect(data?.summary.incomeCents).toBe(400_000)
     expect(data?.summary.expenseCents).toBe(25_000)
   })
