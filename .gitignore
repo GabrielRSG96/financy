@@ -25,4 +25,7 @@ pnpm-debug.log*
 frontend/.vite/
 *.tsbuildinfo
 
+backend/uploads/
+backend/uploads-test/
+
 /pnpm-lock.yaml

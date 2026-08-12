@@ -45,7 +45,7 @@ Abra <http://localhost:5173>. Com o seed do backend aplicado, entre com `conta@t
 | `/cadastro` | Criar conta |
 | `/transacoes` | Lista com filtros e paginação |
 | `/categorias` | Grid de categorias e estatísticas |
-| `/perfil` | Editar nome, e-mail somente leitura, sair |
+| `/perfil` | Editar nome, foto de perfil, e-mail somente leitura, sair |
 
 Mais os dois diálogos de formulário: nova/editar transação e nova/editar categoria.
 
@@ -58,6 +58,7 @@ frontend/
 └── src/
     ├── components/
     │   ├── brand/       logo e wordmark (SVG desenhados à mão)
+    │   ├── profile/     upload da foto de perfil
     │   ├── layout/      navbar e casca das páginas
     │   ├── ui/          primitivos do styleguide
     │   └── dialogs/     formulários de transação e categoria
@@ -65,7 +66,7 @@ frontend/
     ├── graphql/         cliente, operações e tipos
     ├── hooks/           queries e mutations (TanStack Query)
     ├── contexts/        autenticação
-    └── lib/             formatação, datas, catálogo de categorias
+    └── lib/             formatação, datas, catálogo de categorias, imagem
 ```
 
 ---
@@ -80,6 +81,8 @@ frontend/
 
 **Valores em centavos, sempre.** A máscara de moeda escreve direto em centavos (estilo calculadora) e o valor trafega como `Int` — nada de ponto flutuante entre a tela e o banco.
 
+**A foto de perfil é processada no navegador.** O `<canvas>` corta no centro para um quadrado, reduz para 512 px e recodifica em WebP antes de enviar — uma foto de 4 MB vira algo em torno de 40 KB. Sobe pelo próprio GraphQL, como data URL base64, sem `multipart/form-data`.
+
 **"Lembrar-me" faz o que promete.** Marcado, o token vai para o `localStorage` e sobrevive ao fechar o navegador; desmarcado, fica no `sessionStorage` e morre com a aba.
 
 ---
@@ -90,7 +93,7 @@ frontend/
 pnpm test
 ```
 
-33 testes focados no que quebra em silêncio: a máscara de moeda e seu ciclo de ida e volta em centavos, as conversões de data em UTC, a renderização das tags por cor e a validação do formulário de login.
+45 testes focados no que quebra em silêncio: a máscara de moeda e seu ciclo de ida e volta em centavos, as conversões de data em UTC, a renderização das tags por cor, a validação do formulário de login e as regras de corte e validação da foto de perfil.
 
 ---
 

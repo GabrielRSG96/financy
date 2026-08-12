@@ -43,7 +43,7 @@ export function Navbar() {
           className="rounded-full transition-opacity hover:opacity-80"
           aria-label={`Perfil de ${user?.name ?? 'usuário'}`}
         >
-          <Avatar initials={user?.initials ?? '?'} />
+          <Avatar initials={user?.initials ?? '?'} src={user?.avatarUrl} />
         </Link>
       </div>
     </header>

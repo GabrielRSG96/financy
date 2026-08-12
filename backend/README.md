@@ -34,6 +34,8 @@ Conta criada pelo seed: `conta@teste.com` / `financy123`.
 | `JWT_EXPIRES_IN` | Validade do token (padrão `7d`) |
 | `PORT` | Porta da API (padrão `4000`) |
 | `CORS_ORIGIN` | Origens liberadas, separadas por vírgula |
+| `UPLOADS_DIR` | Pasta onde as fotos de perfil são gravadas (padrão `./uploads`) |
+| `PUBLIC_URL` | URL pública da API, usada para montar o endereço das fotos |
 
 A API valida essas variáveis na inicialização e falha com uma mensagem clara se faltar alguma.
 
@@ -62,11 +64,11 @@ backend/
 │   └── seed.ts          conta de demonstração com dados do mês corrente
 ├── src/
 │   ├── modules/         user | category | transaction (typeDefs + resolvers)
-│   ├── lib/             auth, prisma, loaders, erros, validação
+│   ├── lib/             auth, prisma, loaders, erros, validação, uploads
 │   ├── config/env.ts    validação das variáveis de ambiente
 │   ├── context.ts       contexto por request + requireUser
 │   └── server.ts        Apollo Server + express + CORS
-└── tests/               66 testes de integração
+└── tests/               80 testes de integração
 ```
 
 ---
@@ -87,6 +89,8 @@ type Mutation {
   signUp(name: String!, email: String!, password: String!): AuthPayload!
   signIn(email: String!, password: String!): AuthPayload!
   updateProfile(name: String!): User!
+  updateAvatar(image: String!): User!
+  removeAvatar: User!
   createCategory(input: CategoryInput!): Category!
   updateCategory(id: ID!, input: CategoryInput!): Category!
   deleteCategory(id: ID!): Boolean!
@@ -113,6 +117,8 @@ Autenticação por header: `Authorization: Bearer <token>`.
 **Saldo por categoria é líquido.** A agregação separa por tipo e expõe `incomeCents`, `expenseCents` e `balanceCents` (entradas menos saídas).
 
 **Sem N+1.** Os campos agregados de `Category` são resolvidos por um DataLoader por request, alimentado por um único `groupBy`.
+
+**Avatar validado pelos magic bytes.** A foto chega como data URL base64 na mutation `updateAvatar`, e o `Content-Type` declarado é conferido contra os primeiros bytes do arquivo — um `.php` renomeado para `image/png` é recusado. Só PNG, JPEG e WebP, até 2 MB, nome gerado por UUID (o nome original nunca toca o disco) e o arquivo anterior é apagado ao trocar. Os arquivos ficam em `UPLOADS_DIR`, fora do banco, servidos como estáticos em `/uploads`.
 
 ---
 

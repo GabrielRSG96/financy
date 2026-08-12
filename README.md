@@ -1,5 +1,7 @@
 # Financy
 
+> **Branch `feat/avatar-upload`.** Contém o desafio completo **mais** o desafio opcional de upload de foto de perfil. O código original do desafio, só com as regras obrigatórias, está preservado no `master`.
+
 Aplicação fullstack de gerenciamento de finanças pessoais: cada usuário cria sua conta, faz login e gerencia **apenas** as próprias transações e categorias.
 
 - **API** — TypeScript, GraphQL (Apollo Server 4), Prisma, SQLite, JWT
@@ -85,6 +87,8 @@ Na raiz, os mesmos comandos (`dev`, `build`, `test`, `typecheck`, `lint`) rodam 
 | `JWT_EXPIRES_IN` | Validade do token (padrão `7d`) |
 | `PORT` | Porta da API (padrão `4000`) |
 | `CORS_ORIGIN` | Origens liberadas, separadas por vírgula |
+| `UPLOADS_DIR` | Pasta onde as fotos de perfil são gravadas (padrão `./uploads`) |
+| `PUBLIC_URL` | URL pública da API, usada para montar o endereço das fotos |
 
 **`frontend/.env`**
 
@@ -151,6 +155,7 @@ financy/
 - [x] Filtros de transação por busca, tipo, categoria e período, com paginação de 10 por página
 - [x] Dashboard com saldo total, receitas e despesas do mês
 - [x] Edição de perfil e logout
+- [x] Upload de foto de perfil (desafio opcional)
 - [x] CORS habilitado
 - [x] Testes automatizados (API e front)
 - [x] Docker Compose
@@ -168,7 +173,21 @@ financy/
 
 Mais os dois diálogos de formulário — nova/editar transação e nova/editar categoria.
 
-**Fora de escopo:** o link "Recuperar senha" na tela de login existe por fidelidade ao layout, mas o fluxo de recuperação não faz parte desta versão e o app informa isso ao ser clicado. O upload de avatar (desafio opcional) também não foi implementado — o avatar exibe as iniciais do usuário, como no Figma.
+**Fora de escopo:** o link "Recuperar senha" na tela de login existe por fidelidade ao layout, mas o fluxo de recuperação não faz parte desta versão e o app informa isso ao ser clicado.
+
+---
+
+## Upload de foto de perfil
+
+O desafio opcional, implementado nesta branch. Em `/perfil`, o botão de câmera sobre o avatar abre o seletor de arquivos; a foto aparece na hora e passa a valer na navbar. Há também "Remover foto", que volta para as iniciais.
+
+**A imagem é tratada no navegador antes de subir.** O `<canvas>` corta no centro para um quadrado, reduz para 512 px e recodifica em WebP — uma foto de 4 MB vira algo em torno de 40 KB. Isso mantém o payload pequeno, garante que o avatar seja sempre quadrado (o layout é circular) e evita depender de processamento de imagem no servidor.
+
+**O upload viaja pelo próprio GraphQL**, como data URL base64 na mutation `updateAvatar`. Não usei `multipart/form-data` nem `graphql-upload`: seria mais uma dependência e um segundo caminho de autenticação para manter, enquanto a mutation já herda o `Authorization` e o tratamento de erros de todo o resto.
+
+**O servidor não confia no que o navegador diz.** O `Content-Type` declarado no data URL é conferido contra os magic bytes do arquivo, então um `.php` renomeado para `image/png` é recusado. Além disso: só PNG, JPEG e WebP, limite de 2 MB, nome de arquivo gerado por UUID (o nome original nunca toca o disco) e a foto anterior é apagada ao trocar, para não acumular lixo.
+
+**Os arquivos ficam fora do banco**, em `UPLOADS_DIR`, servidos como estáticos em `/uploads`. No Docker a pasta vive no mesmo volume do SQLite, então as fotos sobrevivem ao recriar os containers.
 
 ---
 
@@ -180,6 +199,6 @@ pnpm -C frontend test  # front
 pnpm test              # os dois, a partir da raiz
 ```
 
-**API (66 testes, Vitest).** Integração real: cada suíte roda contra uma cópia própria de um banco SQLite migrado, executando operações GraphQL de ponta a ponta. Cobre autenticação, CRUD das duas entidades, filtros, paginação, agregações e — o mais importante — o isolamento entre usuários.
+**API (80 testes, Vitest).** Integração real: cada suíte roda contra uma cópia própria de um banco SQLite migrado, executando operações GraphQL de ponta a ponta. Cobre autenticação, CRUD das duas entidades, filtros, paginação, agregações e — o mais importante — o isolamento entre usuários.
 
-**Front (33 testes, Vitest + Testing Library).** Foca no que quebra em silêncio: a máscara de moeda e seu ciclo de ida e volta em centavos, as conversões de data em UTC, a renderização das tags por cor e a validação do formulário de login.
+**Front (45 testes, Vitest + Testing Library).** Foca no que quebra em silêncio: a máscara de moeda e seu ciclo de ida e volta em centavos, as conversões de data em UTC, a renderização das tags por cor e a validação do formulário de login.

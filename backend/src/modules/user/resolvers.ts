@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { requireUser, type Context } from '../../context.js'
 import { hashPassword, signToken, verifyPassword } from '../../lib/auth.js'
 import { badRequest, conflict, unauthenticated } from '../../lib/errors.js'
+import { avatarUrl, deleteAvatar, saveAvatar } from '../../lib/uploads.js'
 import { parseInput } from '../../lib/validation.js'
 
 const signUpSchema = z.object({
@@ -20,6 +21,10 @@ const updateProfileSchema = z.object({
   name: z.string().trim().min(2, 'Informe seu nome completo.').max(120),
 })
 
+const updateAvatarSchema = z.object({
+  image: z.string().min(1, 'Selecione uma imagem.'),
+})
+
 export function initials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean)
   if (parts.length === 0) return '?'
@@ -30,6 +35,7 @@ export function initials(name: string): string {
 export const userResolvers = {
   User: {
     initials: (user: User) => initials(user.name),
+    avatarUrl: (user: User) => avatarUrl(user.avatarFile),
   },
 
   Query: {
@@ -73,6 +79,43 @@ export const userResolvers = {
       } catch {
         throw badRequest('Não foi possível atualizar o perfil.')
       }
+    },
+
+    updateAvatar: async (_p: unknown, args: unknown, ctx: Context) => {
+      const userId = requireUser(ctx)
+      const { image } = parseInput(updateAvatarSchema, args)
+
+      const current = await ctx.db.user.findUnique({
+        where: { id: userId },
+        select: { avatarFile: true },
+      })
+      if (!current) throw unauthenticated()
+
+      const file = await saveAvatar(image)
+
+      try {
+        const user = await ctx.db.user.update({ where: { id: userId }, data: { avatarFile: file } })
+        await deleteAvatar(current.avatarFile)
+        return user
+      } catch (error) {
+        await deleteAvatar(file)
+        throw error
+      }
+    },
+
+    removeAvatar: async (_p: unknown, _a: unknown, ctx: Context) => {
+      const userId = requireUser(ctx)
+
+      const current = await ctx.db.user.findUnique({
+        where: { id: userId },
+        select: { avatarFile: true },
+      })
+      if (!current) throw unauthenticated()
+
+      const user = await ctx.db.user.update({ where: { id: userId }, data: { avatarFile: null } })
+      await deleteAvatar(current.avatarFile)
+
+      return user
     },
   },
 }

@@ -8,6 +8,8 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('7d'),
   PORT: z.coerce.number().int().positive().default(4000),
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
+  UPLOADS_DIR: z.string().default('./uploads'),
+  PUBLIC_URL: z.string().url().default('http://localhost:4000'),
 })
 
 const parsed = envSchema.safeParse(process.env)
@@ -20,4 +22,5 @@ if (!parsed.success) {
 export const env = {
   ...parsed.data,
   corsOrigins: parsed.data.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean),
+  publicUrl: parsed.data.PUBLIC_URL.replace(/\/+$/, ''),
 }

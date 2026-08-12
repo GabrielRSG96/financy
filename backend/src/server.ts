@@ -5,6 +5,7 @@ import express from 'express'
 import { contextFromRequest, type Context } from './context.js'
 import { env } from './config/env.js'
 import { prisma } from './lib/prisma.js'
+import { ensureUploadsDir } from './lib/uploads.js'
 import { schema } from './schema.js'
 
 async function main() {
@@ -29,8 +30,18 @@ async function main() {
   })
 
   app.use(
+    '/uploads',
+    express.static(ensureUploadsDir(), {
+      immutable: true,
+      maxAge: '1y',
+      index: false,
+      dotfiles: 'ignore',
+    }),
+  )
+
+  app.use(
     '/graphql',
-    express.json({ limit: '1mb' }),
+    express.json({ limit: '4mb' }),
     expressMiddleware(apollo, {
       context: async ({ req }) => contextFromRequest(req),
     }),
@@ -39,6 +50,7 @@ async function main() {
   const server = app.listen(env.PORT, () => {
     console.log(`🚀 Financy API em http://localhost:${env.PORT}/graphql`)
     console.log(`   CORS liberado para: ${env.corsOrigins.join(', ')}`)
+    console.log(`   Avatares servidos em ${env.publicUrl}/uploads`)
   })
 
   const shutdown = async (signal: string) => {

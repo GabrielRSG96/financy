@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Avatar } from '@/components/ui/avatar'
+import { AvatarUploader } from '@/components/profile/avatar-uploader'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/field'
 import { useAuth } from '@/contexts/auth'
@@ -59,7 +59,7 @@ export function ProfilePage() {
     <div className="mx-auto max-w-md">
       <div className="card p-6 sm:p-8">
         <div className="flex flex-col items-center gap-3 text-center">
-          <Avatar initials={user.initials} size="lg" />
+          <AvatarUploader user={user} />
           <div>
             <h1 className="font-semibold text-ink">{user.name}</h1>
             <p className="text-sm text-ink-muted">{user.email}</p>

@@ -1,5 +1,5 @@
 const USER_FIELDS = `
-  fragment UserFields on User { id name email initials }
+  fragment UserFields on User { id name email initials avatarUrl }
 `
 
 const CATEGORY_FIELDS = `
@@ -49,6 +49,16 @@ export const SIGN_UP = `
 export const UPDATE_PROFILE = `
   ${USER_FIELDS}
   mutation UpdateProfile($name: String!) { updateProfile(name: $name) { ...UserFields } }
+`
+
+export const UPDATE_AVATAR = `
+  ${USER_FIELDS}
+  mutation UpdateAvatar($image: String!) { updateAvatar(image: $image) { ...UserFields } }
+`
+
+export const REMOVE_AVATAR = `
+  ${USER_FIELDS}
+  mutation RemoveAvatar { removeAvatar { ...UserFields } }
 `
 
 export const CATEGORIES = `

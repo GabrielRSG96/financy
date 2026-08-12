@@ -21,6 +21,7 @@ COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/package.json ./package.json
 
 ENV DATABASE_URL=file:/data/financy.db
+ENV UPLOADS_DIR=/data/uploads
 EXPOSE 4000
 
 CMD ["sh", "-c", "mkdir -p /data && npx prisma migrate deploy && npx prisma db seed || true; node dist/server.js"]
